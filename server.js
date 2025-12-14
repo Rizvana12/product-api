@@ -55,3 +55,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Redirect root to the API endpoint so visiting '/' shows the products JSON
+app.get("/", (req, res) => {
+  res.redirect("/api/products");
+});
