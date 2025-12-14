@@ -50,6 +50,8 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.lisen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
