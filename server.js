@@ -46,7 +46,8 @@ app.get("/api/products", async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 
