@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const Product = require("./models/Product");
+const Product = require("./models/product");
 
 const products = [
   { name: "Laptop", price: 55000, category: "Electronics", image:"https://res.cloudinary.com/dquadclwl/image/upload/v1765707217/computer-820281_1280_a00hu1.jpg" },
