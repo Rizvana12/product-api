@@ -1,67 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/product");
+const cors = require("cors");
+require("dotenv").config();
 
-require('dotenv').config();
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
-const cors = require('cors');
 app.use(cors());
+app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URL)
+mongoose
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
+  .catch((err) => console.error(err));
 
+app.use("/api/products", productRoutes);
 
-
-app.get("/api/products", async (req, res) => {
-  try {
-    // Pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
-    const skip = (page - 1) * limit;
-
-    // Filters
-    const { category, search } = req.query;
-    const filter = {};
-
-    if (category) {
-      filter.category = category;
-    }
-
-    if (search) {
-      filter.name = { $regex: search, $options: "i" };
-    }
-
-    const totalProducts = await Product.countDocuments(filter);
-
-    const products = await Product.find(filter)
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    res.json({
-      page,
-      limit,
-      totalProducts,
-      totalPages: Math.ceil(totalProducts / limit),
-      products
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-// Redirect root to the API endpoint so visiting '/' shows the products JSON
-app.get("/", (req, res) => {
-  res.redirect("/api/products");
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));

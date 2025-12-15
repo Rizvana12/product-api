@@ -1,10 +1,6 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
-const Product = require("./models/product");
-
-require('dotenv').config();
-
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB connected"));
+const Product = require("./models/Product");
 
 const products = [
   { name: "Laptop", price: 55000, category: "Electronics", image:"https://res.cloudinary.com/dquadclwl/image/upload/v1765707217/computer-820281_1280_a00hu1.jpg" },
@@ -15,16 +11,12 @@ const products = [
   { name: "Smart Watch", price: 8000, category: "Wearables", image:"https://res.cloudinary.com/dquadclwl/image/upload/v1765708050/watch-6871817_1280_gft1kl.jpg" }
 ];
 
-async function seedProducts() {
-  try {
-    await Product.deleteMany();       // avoid duplicates
-    await Product.insertMany(products);
-    console.log("Products seeded successfully");
-    process.exit();
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
+async function seed() {
+  await mongoose.connect(process.env.MONGO_URL);
+  await Product.deleteMany();
+  await Product.insertMany(products);
+  console.log("Database seeded with 6 products");
+  process.exit();
 }
 
-seedProducts();
+seed();
