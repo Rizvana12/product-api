@@ -19,7 +19,8 @@ app.use("/api/products", productRoutes);
 
 // Root and health endpoints
 app.get("/", (req, res) => {
-  res.json({ message: "API running" });
+  // Redirect root to the products API so users land on JSON data
+  res.redirect("/api/products");
 });
 
 app.get("/health", (req, res) => res.sendStatus(200));
