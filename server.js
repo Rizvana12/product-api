@@ -17,5 +17,12 @@ mongoose
 
 app.use("/api/products", productRoutes);
 
+// Root and health endpoints
+app.get("/", (req, res) => {
+  res.json({ message: "API running" });
+});
+
+app.get("/health", (req, res) => res.sendStatus(200));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
